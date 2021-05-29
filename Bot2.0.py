@@ -1,6 +1,7 @@
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 from telegram import ChatAction
 import requests, urllib
+import csv
 
 INPUT_TEXT=0
 
@@ -49,7 +50,53 @@ def send_imag(text,update,context):
         get_pokemons(text,update,context)
 
     else:
-        update.message.reply_text("El nombre no esta registrado en mis datos.")
+        update.message.reply_text("Es muy probable que hayas escrito mal o el pokemon no este registrado, Te dare una lista seleccionada con ciertos criterios de busque para que identifiques el nombre de tu pokemon, esto puede tardar mas de 10 segundos.")
+        
+        csvFile = open("./DB/data.csv", "r")
+        csvReader = csv.reader(csvFile, delimiter=",")
+        res = [[str(n) for n in line] for line in csvReader]
+        csvFile.close()
+
+        lista=[]
+
+        #Agregando a una lista simple
+        for lista1 in res:
+            for numero in lista1:
+                lista.append(numero)
+
+        #Busqueda dentro de la lista
+        ocurrenciatotal=[0 for i in range(len(lista))]
+
+        for z in range(len(lista)):
+            aux2= z
+            contador=0
+            for c in pokename:
+                if(len(lista[aux2]) <= len(pokename)+1):
+                    ocurrencia= lista[aux2].count(c)    
+                    contador= contador+ ocurrencia
+            ocurrenciatotal[z]= contador
+        
+        nuevalista=[]
+        for i in range(len(lista)):
+            if (ocurrenciatotal[i]<= len(pokename)+1 and ocurrenciatotal[i]>3):
+                nuevalista.append(lista[i])
+        
+        f = open ('./DB/sugerencia.txt','w')
+        for i in range(len(nuevalista)):
+            f.write(nuevalista[i]+"\n")
+        f.close()
+
+        chat= update.message.chat
+        chat.send_action(
+        	action=ChatAction.UPLOAD_DOCUMENT,
+        	timeout=None
+    	)
+        
+        chat.send_document(
+        	document=open('./DB/Sugerencia.txt', 'rb')
+    	)
+
+        update.message.reply_text("Dentro de ese archivo encontraras la lista de pokemons escogidos con cierto grado segun el nombre que digitaste, porfavor te invito a intentar de nuevo la busqueda /pokemon")
     
 
 def get_pokemons(text,update,context):
@@ -93,6 +140,7 @@ def get_pokemons(text,update,context):
                 vacio3.append(valor)    
 
         update.message.reply_text("***Tipo***\n"+' - '.join(vacio1)+"\n***Habilidades***\n"+'  '.join(vacio2)+"\n***Stab Base***\n"+'  '.join(map(str,vacio3)))
+        update.message.reply_text("No olvides que para seguir buscando debes ingresar antes el comando  :)")
 
 def input_text(update, context):
 
@@ -107,7 +155,7 @@ def input_text(update, context):
 
 if __name__ == '__main__':
 
-    updater= Updater(token="Key_Bot", use_context=True)
+    updater= Updater(token="Key_Token", use_context=True)
     
     dp= updater.dispatcher
 
