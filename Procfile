@@ -1,0 +1,1 @@
+worker python Bot2.0.py
