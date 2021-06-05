@@ -172,4 +172,5 @@ if __name__ == '__main__':
     ))
 
     updater.start_polling()
+    print("Bot Running")
     updater.idle()
