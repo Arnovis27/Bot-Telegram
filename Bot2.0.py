@@ -82,7 +82,7 @@ def send_imag(text,update,context):
             if (ocurrenciatotal[i]>= len(pokename)-1 and ocurrenciatotal[i]<= maximo):
                 nuevalista.append(lista[i])
         
-        f = open ('./DB/sugerencia.txt','w')
+        f = open ('./DB/Sugerencia.txt','w')
         for i in range(len(nuevalista)):
             f.write(nuevalista[i]+"\n")
         f.close()
