@@ -31,7 +31,13 @@ def send_imag(text,update,context):
         update.message.reply_text(pokename.upper())
         if sprites:
             #Descargando Imagen
-            front_sprite= sprites['front_default']
+            for item in sprites:
+                other= sprites["other"]
+                for item in other:
+                    officialartwork= other["official-artwork"]
+                    for item in officialartwork:
+                        front_sprite= officialartwork["front_default"]
+            
             imagen= open("./Sprite/Sprite.png", 'wb')
             imagen.write(urllib.request.urlopen(front_sprite).read())
             imagen.close()
