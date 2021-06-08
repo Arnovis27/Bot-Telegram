@@ -72,20 +72,25 @@ def send_imag(text,update,context):
 
         #Busqueda dentro de la lista
         ocurrenciatotal=[0 for i in range(len(lista))]
+        empieza= pokename[0]
+        inicial=0
 
         for z in range(len(lista)):
             aux2= z
             contador=0
             for c in pokename:
-                if(len(lista[aux2]) <= len(pokename)+1):
-                    ocurrencia= lista[aux2].count(c)    
-                    contador= contador+ ocurrencia
+                inicial= lista[aux2]
+                inicial= inicial[0]
+                if(inicial==empieza):
+                    if(len(lista[aux2]) <= len(pokename)+1):
+                        ocurrencia= lista[aux2].count(c)    
+                        contador= contador+ ocurrencia
             ocurrenciatotal[z]= contador
         
         nuevalista=[]
         maximo= max(ocurrenciatotal)
         for i in range(len(lista)):
-            if (ocurrenciatotal[i]>= len(pokename)-1 and ocurrenciatotal[i]<= maximo):
+            if (ocurrenciatotal[i]>= len(pokename)-2 and ocurrenciatotal[i]<= maximo):
                 nuevalista.append(lista[i])
         
         f = open ('./DB/Sugerencia.txt','w')
