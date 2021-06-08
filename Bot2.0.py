@@ -181,7 +181,7 @@ def input_text(update, context):
 
 if __name__ == '__main__':
 
-    updater= Updater(token="659182708:AAGAMoJ3ZsK6bj9Qt4OzkbWpefkDRPi9s70", use_context=True)
+    updater= Updater(token="Token", use_context=True)
     
     dp= updater.dispatcher
 
