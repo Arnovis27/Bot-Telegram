@@ -124,10 +124,28 @@ def get_pokemons(text,update,context):
         types= payload2.get('types', [])
         abilities= payload2.get('abilities', [])
         stats= payload2.get('stats', [])
+        especies= payload2.get('species', [])
         tipo1=0
         habilidad=0
         stabs=0
         valor=0
+        descripcion=0
+
+        if especies:
+            espo= especies["url"]
+        
+        response3= requests.get(espo)
+        payload3= response3.json()
+        flavor= payload3.get('flavor_text_entries', [])
+        aux=0
+
+        if flavor:
+            for aux in flavor:
+                valor2= aux["language"]
+                if(valor2["name"]=="es"):
+                    descripcion= aux["flavor_text"]
+                    break
+        update.message.reply_text("POKEDEX: "+descripcion)
 
         if types:
             for tipos in types:
@@ -146,8 +164,9 @@ def get_pokemons(text,update,context):
                 vacio3.append(stabs['name'])
                 vacio3.append(valor)    
 
-        update.message.reply_text("***Tipo***\n"+' - '.join(vacio1)+"\n***Habilidades***\n"+'  '.join(vacio2)+"\n***Stab Base***\n"+'  '.join(map(str,vacio3)))
-        update.message.reply_text("No olvides que para seguir buscando debes ingresar antes el comando  :)")
+    
+        update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+'  '.join(map(str,vacio3)))
+        
 
 def input_text(update, context):
 
