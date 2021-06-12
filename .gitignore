@@ -1,4 +1,4 @@
-/Token.txt
-/Credential.py
-__pycache__/
-venv/
+Credential.py
+venv
+.vscode
+__pycache__
