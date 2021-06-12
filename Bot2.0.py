@@ -2,7 +2,7 @@ from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHa
 from telegram import ChatAction
 import requests, urllib
 import csv
-from Credential import TOKENKEY
+#from Credential import TOKENKEY
 
 INPUT_TEXT=0
 
