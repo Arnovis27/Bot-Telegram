@@ -3,11 +3,9 @@ from telegram import ChatAction
 import requests, urllib
 import csv
 import os
-#from Credential import TOKENKEY
-from boto.s3.connection import S3Connection #Leer variables en heroku
+from Credential import TOKENKEY
 
 INPUT_TEXT=0
-s3 = S3Connection(os.environ['TOKENKEY']) #Borra esta linea cuando le quites el comentario al from Credential
 
 def start(update, context):
 
