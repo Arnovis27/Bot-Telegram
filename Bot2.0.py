@@ -2,6 +2,7 @@ from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHa
 from telegram import ChatAction
 import requests, urllib
 import csv
+from Credential import TOKENKEY
 
 INPUT_TEXT=0
 
@@ -31,11 +32,11 @@ def send_imag(text,update,context):
         update.message.reply_text(pokename.upper())
         if sprites:
             #Descargando Imagen
-            for item in sprites:
+            if sprites:
                 other= sprites["other"]
-                for item in other:
+                if other:
                     officialartwork= other["official-artwork"]
-                    for item in officialartwork:
+                    if officialartwork:
                         front_sprite= officialartwork["front_default"]
             
             imagen= open("./Sprite/Sprite.png", 'wb')
@@ -114,6 +115,7 @@ def send_imag(text,update,context):
 def get_pokemons(text,update,context):
     url='http://pokeapi.co/api/v2/pokemon/'
     pokename= text.lower()
+    
 
     url2= url + pokename
     response= requests.get(url2)
@@ -186,7 +188,7 @@ def input_text(update, context):
 
 if __name__ == '__main__':
 
-    updater= Updater(token="659182708:AAG0VJ03Zxzl1JPYARdxxhvafYOdEzWmlVo", use_context=True)
+    updater= Updater(token=TOKENKEY, use_context=True)
     
     dp= updater.dispatcher
 
