@@ -2,6 +2,7 @@ from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHa
 from telegram import ChatAction
 import requests, urllib
 import csv
+import os
 #from Credential import TOKENKEY
 from boto.s3.connection import S3Connection #Leer variables en heroku
 
