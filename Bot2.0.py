@@ -3,9 +3,11 @@ from telegram import ChatAction
 import requests, urllib
 import csv
 import os
-from Credential import TOKENKEY
+#from Credential import TOKENKEY
+
 
 INPUT_TEXT=0
+TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
 
