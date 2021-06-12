@@ -5,6 +5,7 @@ import csv
 #from Credential import TOKENKEY
 
 INPUT_TEXT=0
+updater= Updater(token=TOKENKEY, use_context=True)
 
 def start(update, context):
 
@@ -186,10 +187,7 @@ def input_text(update, context):
     return ConversationHandler.END
 
 
-if __name__ == '__main__':
-
-    updater= Updater(token=TOKENKEY, use_context=True)
-    
+if __name__ == '__main__':    
     dp= updater.dispatcher
 
     dp.add_handler(CommandHandler('start',start))
