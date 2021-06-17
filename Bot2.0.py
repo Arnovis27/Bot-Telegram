@@ -7,7 +7,6 @@ import os
 
 
 INPUT_TEXT=0
-INPUT_TEXT_ONE=1
 TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
@@ -18,8 +17,8 @@ def pokemon_Command_Handler(update,context):
     return INPUT_TEXT
 
 def informacion_Command_Handler(update,context):
-    update.message.reply_text("Hola comando2 x2")
-    return INPUT_TEXT_ONE
+    update.message.reply_text("https://github.com/Arnovis27/Bot-Telegram")
+    return ConversationHandler.END
 
 def send_imag(text,update,context):
     url='http://pokeapi.co/api/v2/pokemon/'
@@ -188,10 +187,6 @@ def input_text(update, context):
     send_imag(text,update,context)
     return ConversationHandler.END
 
-def input_text_one(update, context):
-    text= update.message.text
-    informacion(text,update,context)
-    return ConversationHandler.END
 
 
 if __name__ == '__main__':
@@ -208,7 +203,6 @@ if __name__ == '__main__':
         ],
         states={
             INPUT_TEXT:[MessageHandler(Filters.text, input_text)],
-            INPUT_TEXT_ONE:[MessageHandler(Filters.text, input_text_one)]
         },
         fallbacks=[]
     ))
