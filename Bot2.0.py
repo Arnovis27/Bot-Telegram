@@ -7,17 +7,19 @@ import os
 
 
 INPUT_TEXT=0
+INPUT_TEXT_ONE=1
 TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
-
     update.message.reply_text("Hola,Bienvendio\n\nEsta es la linea de comandos que manejo hasta ahora\n/pokemon Buscar datos de un pokemon")
 
 def pokemon_Command_Handler(update,context):
-
     update.message.reply_text("Enviame el nombre del pokemon a encontrar")
-
     return INPUT_TEXT
+
+def informacion_Command_Handler(update,context):
+    update.message.reply_text("Hola comando2 x2")
+    return INPUT_TEXT_ONE
 
 def send_imag(text,update,context):
     url='http://pokeapi.co/api/v2/pokemon/'
@@ -60,7 +62,7 @@ def send_imag(text,update,context):
         get_pokemons(text,update,context)
 
     else:
-        update.message.reply_text("Es muy probable que hayas escrito mal o el pokemon no este registrado, Te dare una lista seleccionada con ciertos criterios de busque para que identifiques el nombre de tu pokemon, esto puede tardar mas de 10 segundos.")
+        update.message.reply_text("Desconozco ese nombre, te recomiendo estos segun lo que escribiste.")
         
         csvFile = open("./DB/data.csv", "r")
         csvReader = csv.reader(csvFile, delimiter=",")
@@ -112,7 +114,7 @@ def send_imag(text,update,context):
         	document=open('./DB/Sugerencia.txt', 'rb')
     	)
 
-        update.message.reply_text("Dentro de ese archivo encontraras la lista de pokemons escogidos con cierto grado segun el nombre que digitaste, porfavor te invito a intentar de nuevo la busqueda /pokemon")
+        update.message.reply_text("Digita nuevamente /pokemon)
     
 
 def get_pokemons(text,update,context):
@@ -178,14 +180,17 @@ def get_pokemons(text,update,context):
         update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+'  '.join(map(str,vacio3)))
         
 
+def informacion(text,update,context):
+    update.message.reply_text("https://github.com/Arnovis27/Bot-Telegram")
+
 def input_text(update, context):
-
     text= update.message.text
-
     send_imag(text,update,context)
+    return ConversationHandler.END
 
-    print(text)
-
+def input_text_one(update, context):
+    text= update.message.text
+    informacion(text,update,context)
     return ConversationHandler.END
 
 
@@ -198,10 +203,12 @@ if __name__ == '__main__':
     dp.add_handler(CommandHandler('start',start))
     dp.add_handler(ConversationHandler(
         entry_points=[
-            CommandHandler('pokemon',pokemon_Command_Handler)
+            CommandHandler('pokemon',pokemon_Command_Handler),
+            CommandHandler('info',informacion_Command_Handler)
         ],
         states={
-            INPUT_TEXT:[MessageHandler(Filters.text, input_text)]
+            INPUT_TEXT:[MessageHandler(Filters.text, input_text)],
+            INPUT_TEXT_ONE:[MessageHandler(Filters.text, input_text_one)]
         },
         fallbacks=[]
     ))
