@@ -114,7 +114,7 @@ def send_imag(text,update,context):
         	document=open('./DB/Sugerencia.txt', 'rb')
     	)
 
-        update.message.reply_text("Digita nuevamente /pokemon)
+        update.message.reply_text("Digita nuevamente /pokemon")
     
 
 def get_pokemons(text,update,context):
