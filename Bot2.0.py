@@ -10,7 +10,8 @@ INPUT_TEXT=0
 TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
-    update.message.reply_text("Hola,Bienvendio!")
+    user = update.message.from_user #usuario
+    update.message.reply_text("Bienvendio "+user['first_name']+" "+ user['last_name']+", mi sistema de busqueda esta a tu disposición ahora.")
 
 def pokemon_Command_Handler(update,context):
     update.message.reply_text("Enviame el nombre del pokemon a encontrar")
