@@ -174,12 +174,13 @@ def get_pokemons(text,update,context):
                 valor= base['base_stat']
                 stabs= base['stat']
                 vacio3.append(stabs['name'])
+                vacio3.append(": ")
                 vacio3.append(valor)    
                 vacio3.append(".")
 
         p = ' '.join(map(str,vacio3))
-        p = p.replace(' . ', '.\n')
-        update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+'  '+p)
+        p = p.replace(' . ', '\n')
+        update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+p)
         
 
 def informacion(text,update,context):
