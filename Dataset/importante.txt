@@ -1,0 +1,3 @@
+Esta carpeta es algo aparte del proyecto, es para generar el csv con los nombres
+sirve para sugerir nombres, este codigo se debe ejecutar aparte del BOT2.0.py
+Si quieres generar otra vez los nombres, debes reemplazar la carpeta "DB" de aqui, con la del bot
