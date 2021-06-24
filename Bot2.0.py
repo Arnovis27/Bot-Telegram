@@ -3,11 +3,11 @@ from telegram import ChatAction
 import requests, urllib
 import csv
 import os
-#from Credential import TOKENKEY
+from Credential import TOKENKEY
 
 
 INPUT_TEXT=0
-TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
+#TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
     user = update.message.from_user #usuario
@@ -32,9 +32,12 @@ def send_imag(text,update,context):
         response2= requests.get(url2)
         payload2= response2.json()
         sprites= payload2.get('sprites', [])
+        Id= payload2.get('id')
         front_sprite=''
 
-        update.message.reply_text(pokename.upper())
+        update.message.reply_text("N.°"+str(Id)+" "+pokename.upper())
+
+
         if sprites:
             #Descargando Imagen
             if sprites:
