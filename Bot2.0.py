@@ -3,11 +3,11 @@ from telegram import ChatAction
 import requests, urllib
 import csv
 import os
-#from Credential import TOKENKEY
+from Credential import TOKENKEY
 
 
 INPUT_TEXT=0
-TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
+#TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
     user = update.message.from_user #usuario
@@ -20,6 +20,59 @@ def pokemon_Command_Handler(update,context):
 def informacion_Command_Handler(update,context):
     update.message.reply_text("https://github.com/Arnovis27/Bot-Telegram")
     return ConversationHandler.END
+
+def naturaleza_Command_Handler(update,context):
+
+    update.message.reply_text("Este proceso puede demorar un poco, ten paciencia")
+
+    url3= "https://pokeapi.co/api/v2/nature/"
+    response3= requests.get(url3)
+    payload3= response3.json()
+    naturaleza= payload3.get('results',[])
+    natu=[]
+    link=[]
+    nada="neutral"
+    valor4=[]
+    valor5=[]
+
+
+    if naturaleza:
+        for nat in naturaleza:
+            natu.append(nat["name"])
+            link.append(nat["url"])
+
+        for i in range(len(natu)):
+            url4= link[i]
+            response3= requests.get(url4)
+            if response3.status_code == 200:
+                response4= requests.get(url4)
+                payload4= response4.json()
+                increase= payload4.get('increased_stat', [])
+                decrease= payload4.get('decreased_stat', [])
+
+                if increase:
+                    valor4.append(increase["name"])
+                else:
+                    valor4.append(nada)
+
+                if decrease:
+                    valor5.append(decrease["name"])
+                else:
+                    valor5.append(nada)
+    
+    naturalezalargo=[]
+    for i in range(len(natu)):
+        naturalezalargo.append(natu[i]+": "+"+ "+ valor4[i]+"; - "+valor5[i]+"*")
+
+    aux5 = ''.join(map(str,naturalezalargo))
+    aux5 = aux5.replace('*', '\n')
+
+    update.message.reply_text(aux5)
+    
+
+    return ConversationHandler.END
+
+
 
 def send_imag(text,update,context):
     url='http://pokeapi.co/api/v2/pokemon/'
@@ -184,10 +237,7 @@ def get_pokemons(text,update,context):
         p = ''.join(map(str,vacio3))
         p = p.replace('.', '\n')
         update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+p)
-        
 
-def informacion(text,update,context):
-    update.message.reply_text("https://github.com/Arnovis27/Bot-Telegram")
 
 def input_text(update, context):
     text= update.message.text
@@ -206,6 +256,7 @@ if __name__ == '__main__':
     dp.add_handler(ConversationHandler(
         entry_points=[
             CommandHandler('pokemon',pokemon_Command_Handler),
+            CommandHandler('naturaleza',naturaleza_Command_Handler),
             CommandHandler('info',informacion_Command_Handler)
         ],
         states={
