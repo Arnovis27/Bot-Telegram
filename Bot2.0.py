@@ -7,6 +7,7 @@ import os
 
 
 INPUT_TEXT=0
+INPUT_TEXT2=1
 TOKENKEY= os.getenv("TOKENKEY")#Esta linea es para heroku, comentala y decomenta la de arriba
 
 def start(update, context):
@@ -16,6 +17,10 @@ def start(update, context):
 def pokemon_Command_Handler(update,context):
     update.message.reply_text("Enviame el nombre del pokemon a encontrar")
     return INPUT_TEXT
+
+def estadisticas_Command_Handler(update,context):
+    update.message.reply_text("Nombre del pokemon a evaluar")
+    return INPUT_TEXT2
 
 def informacion_Command_Handler(update,context):
     update.message.reply_text("https://github.com/Arnovis27/Bot-Telegram")
@@ -180,10 +185,6 @@ def get_pokemons(text,update,context):
 
     url2= url + pokename
     response= requests.get(url2)
-    vacio1=[]
-    vacio2=[]
-    vacio3=[]
-
 
 
     if response.status_code == 200:
@@ -215,6 +216,30 @@ def get_pokemons(text,update,context):
                     break
         update.message.reply_text("POKEDEX: "+descripcion)
 
+        
+
+def valores(text,update,context):
+    url='http://pokeapi.co/api/v2/pokemon/'
+    pokename= text.lower()
+    
+    url2= url + pokename
+    response= requests.get(url2)
+    vacio1=[]
+    vacio2=[]
+    vacio3=[]
+
+    if response.status_code == 200:
+        response2= requests.get(url2)
+        payload2= response2.json()
+        types= payload2.get('types', [])
+        abilities= payload2.get('abilities', [])
+        stats= payload2.get('stats', [])
+        especies= payload2.get('species', [])
+        tipo1=0
+        habilidad=0
+        stabs=0
+        valor= 0
+        
         if types:
             for tipos in types:
                 tipo1= tipos['type']
@@ -238,12 +263,18 @@ def get_pokemons(text,update,context):
         p = p.replace('.', '\n')
         update.message.reply_text("---Tipo---\n"+' - '.join(vacio1)+"\n---Habilidades---\n"+'  '.join(vacio2)+"\n---Stab Base---\n"+p)
 
+    else:
+        update.message.reply_text("Digite el comando nuevamente y verifique el nombre, no entendi lo que quieres decir...")
 
 def input_text(update, context):
     text= update.message.text
     send_imag(text,update,context)
     return ConversationHandler.END
 
+def input_text2(update, context):
+    text= update.message.text
+    valores(text,update,context)
+    return ConversationHandler.END
 
 
 if __name__ == '__main__':
@@ -256,11 +287,13 @@ if __name__ == '__main__':
     dp.add_handler(ConversationHandler(
         entry_points=[
             CommandHandler('pokemon',pokemon_Command_Handler),
+            CommandHandler('estadisticas',estadisticas_Command_Handler),
             CommandHandler('naturaleza',naturaleza_Command_Handler),
             CommandHandler('info',informacion_Command_Handler)
         ],
         states={
             INPUT_TEXT:[MessageHandler(Filters.text, input_text)],
+            INPUT_TEXT2:[MessageHandler(Filters.text, input_text2)],
         },
         fallbacks=[]
     ))
